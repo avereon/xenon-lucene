@@ -14,6 +14,25 @@
 	<version>8.10.1-0</version>
 
 	<name>Xenon Lucene</name>
+	<description>Shaded Lucene JAR for Xenon</description>
+	<inceptionYear>2021</inceptionYear>
+
+	<developers>
+		<developer>
+			<name>Mark Soderquist</name>
+			<email>mark@soderquist.net</email>
+			<roles>
+				<role>Architect</role>
+			</roles>
+		</developer>
+	</developers>
+
+	<repositories>
+		<repository>
+			<id>avn</id>
+			<url>https://repo.avereon.com/avn</url>
+		</repository>
+	</repositories>
 
 	<properties>
 		<lucene.version>8.10.1</lucene.version>
