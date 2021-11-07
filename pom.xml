@@ -3,12 +3,11 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-<!--	<parent>-->
-<!--		<groupId>com.avereon</groupId>-->
-<!--		<artifactId>xenon</artifactId>-->
-<!--		<version>3.3.1</version>-->
-<!--		<relativePath>../../../..</relativePath>-->
-<!--	</parent>-->
+	<parent>
+		<groupId>com.avereon.pom</groupId>
+		<artifactId>jar</artifactId>
+		<version>3.3.1</version>
+	</parent>
 
 	<groupId>com.avereon.xenon</groupId>
 	<artifactId>lucene</artifactId>
