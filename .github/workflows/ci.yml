@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  AVN_GPG_PASSWORD: ${{ secrets.AVN_GPG_PASSWORD }}
+  AVN_KEYSTORE_PASSWORD: ${{ secrets.AVN_KEYSTORE_PASSWORD }}
+  AVN_REPO_USERNAME: ${{ secrets.AVN_REPO_USERNAME }}
+  AVN_REPO_PASSWORD: ${{ secrets.AVN_REPO_PASSWORD }}
+
+  JAVA_VERSION: "17"
+  MAVEN_PARMS: "-B -U -V --settings .github/settings.xml --file pom.xml"
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Fetch sources
+        uses: actions/checkout@v2
+
+      - name: Fetch CI/CD resources
+        uses: actions/checkout@v2
+        with:
+          repository: avereon/canoe
+          path: .github
+
+      - name: Configuration
+        shell: bash
+        run: |
+          source .github/config.sh
+
+      - name: Set up Java
+        uses: actions/setup-java@v2
+        with:
+          distribution: ${{env.JAVA_DISTRO}}
+          java-version: ${{env.JAVA_VERSION}}
+          java-package: ${{env.JAVA_PACKAGE}}
+
+      - name: Maven Repository Cache
+        uses: actions/cache@v1
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Deploy Arifacts
+        run: |
+          mvn ${{env.MAVEN_PARMS}} deploy
+
+      - name: Trigger Dependent Builds
+        run: |
+          curl -XPOST -u "${{secrets.AVN_CI_USERNAME}}:${{secrets.AVN_CI_PASSWORD}}" -H "Accept: application/vnd.github.v3+json" -H "Content-Type: application/json" https://api.github.com/repos/avereon/xenon/actions/workflows/ci.yml/dispatches --data '{"ref": "main"}'
