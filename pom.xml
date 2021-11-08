@@ -11,7 +11,7 @@
 
 	<groupId>com.avereon.xenon</groupId>
 	<artifactId>lucene</artifactId>
-	<version>8.10.1-0</version>
+	<version>8.10.1-1</version>
 
 	<name>Xenon Lucene</name>
 	<description>Shaded Lucene JAR for Xenon</description>
